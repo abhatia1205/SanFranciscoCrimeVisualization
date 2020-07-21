@@ -1,0 +1,26 @@
+Monday, July 20th, 2020
+
+Anant Bhatia Log:
+
+Accomplishments:
+
+- Researched difference between multiclass logistic regression, naive bayes algorithm, and multi-ouput regressors
+- Determined to test all algorithms on the dataset, although NaiveBayes seems like the easiest way to
+predict probability dsitrubtion
+- Tackling the independence assumptions between longitude and latitude is trivialized with Naive Bayes,
+although may not lead to most accurate results
+- Logistic regression would need to be over 400 classes given an input space of a smaller size.
+Seems to run into space-sparisty problems, and generally doesn't seem like a good idea.
+- May have to manually perfom maximum likliehood estimation for naive bayes algorithm due to multiple output
+- It seems as though a longitude-latitude independence assumption would trivialize the problem,
+but am still wary of the results.
+
+Goals for tomorrow:
+
+- Implement logisitc regression and naive bayes using independence assumption
+- Research more methods for mulitple output to bypass independence assumption
+
+What I learnt:
+
+- Refresher on maximum likliehood estimation and Gaussian Discriminant Analysis
+- Learnt about Desision Trees and Ensemble methods, though useless for this project
