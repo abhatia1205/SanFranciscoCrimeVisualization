@@ -42,3 +42,23 @@ Goals for tomorrow:
 
 -Try Linear regressing long and lat, and then subtracting this y^hat from both lon and lat to normalize.
 - Try creating intial json of predictions to ship to Michael
+
+
+Wednesday, July 22, 2020
+
+Anant Bhatia Log:
+
+Accomplishments:
+
+- Got predictions using Categorical Naive Bayes algorithm
+- Shipped JSON to Michael
+- Developed script to take input CSV and ship output of properl formatted predictions
+- Performed Chi Squared test of Independence to check association between longitude and latitude
+- Performed linear regression to check geographical patterns in longitude and latitude
+- Conclusion: Longitude and Latitude are obviously not independent in terms of predicting crim,
+so the current method of multiplication assumping independence is faulty
+
+Goals for tomorrow:
+
+- Documentation of code
+- Help Micahel with his work
