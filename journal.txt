@@ -34,7 +34,7 @@ Accomplishments:
 - Tried fitting Categorical Naive Bayes, Logistic Regression, Decision Tree, and simple MLP to the given data
 - Wrote script to format the data such that coordinates are rounded to values
 - Debugged the accuracy problem. For all of the given data, I was getting a maximum of 15% training accuracy, which is extremely
-low. After some debugging, I realized it was a error in the logic - I was trying to map a lower imensional space to one of higher dimension and expect to gain infromation. This is, of course, a faulty premise and ruins the entire prediction process to some extent. Addtionally, since time and type of crime are not good indicators of location on average, and due to the fact that the mapping is a fucntion, the output space was limited to 6 of the 25 given options. The idea is essentially that the model learns to predict crimes of a larger frequency, irrelevant of the time of year. 
+low. After some debugging, I realized it was a error in the logic - I was trying to map a lower imensional space to one of higher dimension and expect to gain infromation. This is, of course, a faulty premise and ruins the entire prediction process to some extent. Addtionally, since time and type of crime are not good indicators of location on average, and due to the fact that the mapping is a fucntion, the output space was limited to 6 of the 25 given options. The idea is essentially that the model learns to predict crimes of a larger frequency, irrelevant of the time of year.
 - It seems as though predict class probabilities should still work to some extent. Only time will tell.
 - Finally, I realized that I can actually try to create a function to map longitudes such that it is a relatively een distribution to avoid independences issues.
 
@@ -62,3 +62,20 @@ Goals for tomorrow:
 
 - Documentation of code
 - Help Micahel with his work
+
+
+Thursday, July 23, 2020
+
+Anant Bhatia Log:
+
+Accomplishments:
+
+- Created corrected JSONS
+- Helped Michael with figuring out coordinates on the heatmap
+- Today was kind of a chill day
+
+Goals for tomorrow:
+
+-Help Michael with anything he needs
+- Document all the code written so far
+- Finish Michaels Document, at least the ML part
