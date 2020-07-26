@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualizing Predicted San Francisco Crime</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="stylesheets/indexstylesheet.css">
+
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCm8Kn0ySNLecDJP67SVwZQHpYKq_QrEwM&callback=initMap&libraries=visualization&v=weekly"
+            defer
+    ></script>
+
+    <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+
+</head>
+
+<body>
+<center><h1 style>VISUALIZING PREDICTED SAN FRANCISCO CRIME</h1></center>
+<center><p>by Michael Yang and Anant Bhatia</p></center>
+<fieldset>
+    <select id="month">
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+    </select>
+
+    <select id="type">
+        <option value="2">LARCENYANDTHEFT</option>
+        <option value="3">VEHICLETHEFT</option>
+        <option value="4">VANDALISM</option>
+        <option value="5">ROBBERY</option>
+        <option value="6">ASSAULT</option>
+        <option value="7">WEAPONLAWS</option>
+        <option value="8">BURGLARY</option>
+        <option value="9">SUSPICIOUSOCC</option>
+        <option value="10">DRUGANDNARCOTIC</option>
+        <option value="11">STOLENPROPERTY</option>
+        <option value="12">MISSINGPERSON</option>
+        <option value="13">KIDNAPPING</option>
+        <option value="14">SEXOFFENSESFORCIBLE</option>
+        <option value="15">PROSTITUTION</option>
+        <option value="16">ARSON</option>
+    </select>
+
+    <button type="button" onclick="buttonreact()">Go!</button>
+
+    <span id="monthdisplay"></span>
+    <span id="typedisplay"></span>
+
+    <a href="anantlogs.html">
+        <button type="button" style="float:right">anant devlogs</button>
+    </a>
+    <a href="michaellogs.html">
+        <button type="button" style="float:right">michael devlogs</button>
+    </a>
+    <a href="ethics.html">
+        <button type="button" style="float:right">ethics</button>
+    </a>
+    <a href="about.html">
+        <button type="button" style="float:right">about</button>
+    </a>
+
+
+</fieldset>
+
+<div id="map"></div>
+
+<script>
+
+    //SUPER IMPORTANT LINE, without this the page loads before the $.getJSON call is made and it won't work
+    $.ajaxSetup({
+        async:false
+    });
+
+    //Firebase setup
+    const firebaseConfig = {
+        apiKey: "AIzaSyAD3r-arps60vyazP1lVFeErEIj5BR7fxk",
+        authDomain: "cupertinohacks-cc57d.firebaseapp.com",
+        databaseURL: "https://cupertinohacks-cc57d.firebaseio.com",
+        projectId: "cupertinohacks-cc57d",
+        storageBucket: "cupertinohacks-cc57d.appspot.com",
+        messagingSenderId: "675752382206",
+        appId: "1:675752382206:web:6379012fa5610a22ad9faf",
+        measurementId: "G-Q85PN9NWR9"
+    };
+
+    //firebase initialization tool
+    firebase.initializeApp(firebaseConfig);
+
+    (function(exports) {
+
+        //map initialization function
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 37.7749, lng: -122.4194},
+                zoom: 13,
+                zoomControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+                streetViewControl: false,
+                rotateControl: true,
+                fullscreenControl: true,
+                mapTypeId: "satellite"
+            });
+
+            //starting heatmap initialization
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: locations(),
+                map: map,
+                radius: 35
+            });
+        }
+
+        //location information
+        function locations() {
+
+            var dataarray = [];
+
+            //reading local json file with jquery
+            $.getJSON("resultfinal.json", function(month) {
+                async:false
+                $.each(month[10].KIDNAPPING, function(key, val) {
+                    var lati = val.Latitude;
+                    var longi = val.Longitude;
+                    var weight = val.Weight;
+                    console.log(lati+", "+longi+" weighted at: "+weight);
+                    dataarray.push({location: new google.maps.LatLng(lati, longi), weight:val.Weight});
+                });
+            });
+
+            console.log(dataarray);
+            return dataarray;
+        }
+
+        exports.initMap = initMap;
+        exports.locations = locations;
+
+    })((this.window = this.window || {}));
+
+    //main variables for the chosen month and type
+    var selectedmonth;
+    var selectedtype;
+
+    //initial placeholder text
+    document.getElementById("monthdisplay").innerHTML = 'Select a Month and Type!';
+
+    //variables that act as indexes to the two select HTML elements
+    var a = document.getElementById("month");
+    var b = document.getElementById("type");
+
+    document.getElementById("monthdisplay").innerHTML = "Selected Month: " + "November" + " | ";
+    document.getElementById("typedisplay").innerHTML = "Selected Type: " + "KIDNAPPING";
+
+    //function called with "Go!" button press (month and crime type have been selected)
+    function buttonreact() {
+
+        //changes value of main variables to the user-selected values
+        selectedmonth = a.options[a.selectedIndex].text;
+        selectedtype = b.options[b.selectedIndex].text;
+
+        window.location='https://cupertinohacks-cc57d.web.app/maps/'+selectedmonth+selectedtype+".html";
+
+        //function that sends user to selected page
+    }
+
+</script>
+
+</body>
+
+
+</html>

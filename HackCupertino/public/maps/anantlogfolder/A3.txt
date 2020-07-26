@@ -1,0 +1,16 @@
+Wednesday, July 22, 2020
+
+Accomplishments:
+
+- Got predictions using Categorical Naive Bayes algorithm
+- Shipped JSON to Michael
+- Developed script to take input CSV and ship output of properly formatted predictions
+- Performed Chi Squared test of Independence to check association between longitude and latitude
+- Performed linear regression to check geographical patterns in longitude and latitude
+- Conclusion: Longitude and Latitude are obviously not independent in terms of predicting crim,
+so the current method of multiplication assuming independence is faulty
+
+Goals for tomorrow:
+
+- Documentation of code
+- Help Michael with his work

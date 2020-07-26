@@ -1,0 +1,84 @@
+7/24/2020
+
+Today was the last day of most of the programming. The rest of our time will be spent on readying the submissions.
+
+Today's work:
+    Generated all the new html files
+        had to make some changes within them
+            set up links so that the go button actually works and links properly
+        wrote java process to do so
+            immediate first issue: the html file is multiple lines
+                used an online parser to get it all in one line
+            immediate next issue: whenever there is another quotation mark on the file, the string breaks and is ruined
+                replace all " with \"
+            got screwed over by my own desire to comment my code
+                the new files generate all in one line; the first JS comment makes the rest of the entire line comments and ruins the file
+                    was a little angry that my effort to make my code readable was punished
+                ended up deleting all the comments from everything; only index still has comments
+            ultimately decided to manually make one working file, then read from that file and duplicate that line by line
+                obviously making certain changes on certain lines through java process shown below
+            GOT IT WORKING
+                as of 10:28 AM, the website officially works with all features.
+                    at this time, I still have icons to add, an about page to update, etc, but all features are complete and added in.
+    Had some free time, wanted to try google maps infowindows and markers
+        didn't have time to finish it, had some fun trying though
+Tomorrow's work:
+    Complete all supplementary material
+        About page needs some more fields filled out
+        Complete video for video submission
+        Devpost submission
+    Deploy to github via git
+
+
+java program to create new html files
+
+import java.util.*;
+import java.io.*;
+public class SummonHTMLs {
+    public static void main(String args[]) throws IOException {
+
+        //arrays for all the files I want to print
+        String[] months = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+        String[] types = {"LARCENYANDTHEFT","VEHICLETHEFT","VANDALISM","ROBBERY","ASSAULT","WEAPONLAWS","BURGLARY",
+                "SUSPICIOUSOCC","DRUGANDNARCOTIC","STOLENPROPERTY","MISSINGPERSON","KIDNAPPING","SEXOFFENSESFORCIBLE",
+                "PROSTITUTION","ARSON"};
+
+        for (int i = 0; i < months.length; i++) {
+
+            for (int j = 0; j < types.length; j++) {
+
+                //reading file with BufferedReader
+                //this line (BufferedReadder) makes the code very inefficient; every new print is forced to read the orig file again
+                //the added time is insignificant to the point where I'd rather just do this than come up with another solution
+                BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\mainm\\Documents\\GitHub\\2020hackathon\\HackCupertino\\public\\maps\\template.html"));
+
+                //generating file title
+                String title = months[i]+types[j]+".html";
+
+                //personal checker
+                System.out.println(title);
+
+                //printing file with PrintWriter
+                PrintWriter pr = new PrintWriter(new FileWriter("C:\\Users\\mainm\\Documents\\GitHub\\2020hackathon\\HackCupertino\\public\\maps\\"+title));
+
+                for (int k = 0; k < 192; k++) {
+                    String a = br.readLine();
+                    if (k == 142) {
+                        pr.println("                $.each(month["+i+"]."+types[j]+", function(key, val) {");
+                    } else if (k == 171) {
+                        pr.println("    document.getElementById(\"monthdisplay\").innerHTML = \"Selected Month: \" + \""+months[i]+"\" + \" | \";");
+                    } else if (k == 172) {
+                        pr.println("    document.getElementById(\"typedisplay\").innerHTML = \"Selected Type: \" + \""+types[j]+"\";");
+                    } else {
+                        pr.println(a);
+                    }
+                }
+
+                pr.close();
+
+            }
+        }
+    }
+}
+
+Postnote: If the judges are here reading this, please know that I understand that this is not the most efficient way to do things, but I didn't have the time to properly sort out the maps api in a way that allows for the map to be constantly recreated at the press of a button.

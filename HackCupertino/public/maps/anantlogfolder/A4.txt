@@ -1,0 +1,13 @@
+Thursday, July 23, 2020
+
+Accomplishments:
+
+- Created corrected JSONS
+- Helped Michael with figuring out coordinates on the heatmap
+- Today was kind of a chill day
+
+Goals for tomorrow:
+
+-Help Michael with anything he needs
+- Document all the code written so far
+- Finish Michael's Document, at least the ML part

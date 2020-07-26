@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test run</title>
+</head>
+<body>
+<p id="text"></p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    // $.getJSON("result-2.json", function(month) {
+    //
+    //     console.log(month);
+    //
+    //     $.each(month, function(key, val) {
+    //
+    //         console.log(val);
+    //
+    //         $.each(val, function(key1, val1) {
+    //
+    //             console.log(val1);
+    //
+    //             $.each(val1, function(key2, val2) {
+    //
+    //                 console.log(val2.Longitude);
+    //
+    //             });
+    //
+    //         });
+    //
+    //     });
+    //
+    // });
+
+    $.getJSON("resultfinal.json", function(month) {
+
+        console.log(month);
+
+        $.each(month[0].LARCENYANDTHEFT, function(key, val) {
+
+            console.log(val.Weight);
+
+        });
+
+    });
+
+
+
+
+</script>
+
+
+</body>
+</html>

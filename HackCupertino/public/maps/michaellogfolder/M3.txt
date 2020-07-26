@@ -1,0 +1,162 @@
+7/22/2020
+
+Woke up a bit later than yesterday, around 30 minutes. Needed the sleep.
+
+Today's work:
+    Finishing setup for Firebase Realtime DB
+        forgot to set up a storage bucket for the Database, was an honest mistake. I set it up today.
+        actually set up Firebase code today; wasn't using it before, so I didn't bother with it
+            unfortunately, setting up Firebase resulted in a flurry of other issues
+                weird error telling me the initMap function doesn't exist
+                    fixed this by changing maps API src script line to not defer, I'm honestly not sure why that changes anything
+                my map literally didn't work anymore
+                    downloaded all the CDNs through Webstorm instead of using Google's hosting URLs, which solved the problem of: it literally wasn't working before
+                        sidenote: not sure where the files actually downloaded to, I just hit download haha
+                    for more clarity:
+                        the reason my google maps API key is public is because I have it restricted so that only the web version of the project can use it
+                        every time I load my proj in my local environment, it briefly loads the map, then covers it with an error message
+                            error message is intended, it tells me that this environment doesn't have access to the API usage, so my restrictions are working
+                        when I say it "didn't work anymore," the map itself (including error msg) weren't loading due to a JS issue
+                slowly lost my sanity over the course of the two hours that it took to add Firebase code while making sure old functions work
+        the DB has some built in security measures for privacy --> the site doesn't allow for unlimited access to reading the DB's information
+            fixed the issue, I think?
+    Temporary (probably permanent) verdict for Firebase Realtime DB: WE'RE NOT USING IT.
+        spent something like three hours working with it, and for the most part, I got most of what I wanted to work
+            was able to print information from the Realtime DB to console (just changed DB rules to make it publicly accessible)
+        ultimately, the one thing that stood in the way was integration with google maps API
+            the heatmap refused to generate with the points I was getting from the Firebase DB, don't really know why
+                found a tutorial for firebase and heatmap integrated code on google website
+                    the tutorial itself isn't quite what we're trying to do; it adds map-clicks to the firebase db, which I don't really want to do
+                ultimately don't feel confident in my ability to sort this out within the next two days (and work on remainder of additional material to submit)
+                    still need to write a bit more for overall project summary
+                    still have other things to implement and add to the site
+                alternative solution: just going to manually input all points and make a separate page for each map
+                    still works, isn't a huge issue in terms of data, explanation below
+                        12 months in a year
+                        39 different classifications for crime listed below (these are the ones in the dataset)
+                            OTHER OFFENSES
+                            LARCENYANDTHEFT
+                            VEHICLE THEFT
+                            VANDALISM
+                            *NON-CRIMINAL
+                            ROBBERY
+                            ASSAULT
+                            *WARRANTS
+                            WEAPON LAWS
+                            BURGLARY
+                            SUSPICIOUS OCC
+                            *DRUNKENNESS
+                            *FORGERYANDCOUNTERFEITING
+                            DRUGANDNARCOTIC
+                            STOLEN PROPERTY
+                            *SECONDARY CODES
+                            *TRESPASS
+                            MISSING PERSON
+                            *FRAUD
+                            KIDNAPPING
+                            *RUNAWAY
+                            *DRIVING UNDER THE INFLUENCE
+                            SEX OFFENSES FORCIBLE
+                            PROSTITUTION
+                            *DISORDERLY CONDUCT
+                            ARSON
+                            *FAMILY OFFENSES
+                            *LIQUOR LAWS
+                            *BRIBERY
+                            *EMBEZZLEMENT
+                            *SUICIDE
+                            *LOITERING
+                            *SEX OFFENSES NON FORCIBLE
+                            *EXTORTION
+                            *GAMBLING
+                            *BAD CHECKS
+                            *TREA
+                            *RECOVERED VEHICLE
+                            *PORNOGRAPHYANDOBSCENE MAT
+                        50 highest likelihood points plotted
+                        12*39=468 separate pages
+                        12*39*50 = 23400 separate points
+                        the big issue at hand is the 468 separate pages I have to generate, which I very much don't want to have to do
+                        current solution: get rid of some of the classifications
+                            there's a good reason to do this, listed below are choices and explanations (they're marked in the above list with asterisks)
+                                NON-CRIMINAL
+                                    we are focused on reporting crime; these points are not necessarily crime, but moments when police intervened (not valid)
+                                WARRANTS
+                                    warrants are not necessarily the site of crimes
+                                        could be the addresses of criminals; such addresses may not have a real relationship with locations of crime
+                                    ultimately not guaranteed to be relevant enough
+                                DRUNKENNESS
+                                    not important for user to know where people choose to get drunk
+                                    not valuable information for authorities --> points most likely circulate around bars/clubs
+                                FORGERYANDCOUNTERFEITING
+                                    not important for user to know where people forge money
+                                    not valuable information for authorities --> not enough cases, also offers very little information regarding socioeconomic status of area
+                                SECONDARY CODES
+                                    looked it up, not clear as to what this is, shouldn't be that important
+                                TRESPASS
+                                    not important for user to know where property is trespassed upon --> application is largely targeted towards providing tourists with information --> tourists would not own property in the area
+                                FRAUD
+                                    not important for user to know where an individual is arrested for fraud/address of fraudulent individual
+                                RUNAWAY
+                                    not important for user to know where runaways are found/where minors run away from
+                                DRIVING UNDER THE INFLUENCE
+                                    not important for user to know where drunk drivers are caught --> act of crime is mobile, not restricted to location
+                                        location where individual is apprehended is not as relevant as location where individual began driving, which we cannot guarantee is the location provided
+                                DISORDERLY CONDUCT
+                                    disorderly conduct encompasses many "crimes" that are in reality mere annoyances; I do not consider them of enough importance
+                                        i.e. public drunkenness, loitering, violating noise ordinances
+                                    too broad to represent the variety of different scenarios under the same map
+                                FAMILY OFFENSES
+                                    "a crime committed against a relative or other person whom the perpetrator has an intimate relationship with"
+                                        can't find a reasonable way to link this to location, too broad to represent the variety of different scenarios under the same map
+                                LIQUOR LAWS
+                                    not important for user to know where minors buy alcohol, where alcohol is sold to a minor/without a license
+                                    DRIVING UNDER THE INFLUENCE is also removed
+                                SUICIDE
+                                    self explanatory, creating a map displaying where suicides occur without context is absurd and unnecessary
+                                BRIBERY
+                                    not important for user to know where bribery occurs
+                                EMBEZZLEMENT
+                                    not important for user to know where embezzlement of funds occurs
+                                LOITERING
+                                    legal definition of "loitering" is very loose and open to interpretation
+                                    the homeless in SF are largely left alone, what constitutes loitering is too unclear without context
+                                SEX OFFENSES NON FORCIBLE
+                                    "sexual conduct with individuals the law assumes... not capable of giving consent" i.e. physically/mentally disabled, minors
+                                    too broad to represent the variety of different scenarios under the same map (i.e. minors can verbally give consent without legally being able too, much too convoluted)
+                                EXTORTION
+                                    too broad to represent the variety of different scenarios under the same map
+                                    could be political, personal, organized crime, etc
+                                GAMBLING
+                                    not important for user to know where gambling occurs in San Francisco (tourists are not likely to take place in this/be worried of it)
+                                BAD CHECKS
+                                    not important for user to know where individuals are arrested for bounced checks/insufficient funds
+                                TREA
+                                    stands for "trespassing/loitering near posted industrial property"
+                                    not important for user to know the locations of industrial property (they're tourists, not contractors)
+                                RECOVERED VEHICLE
+                                    much more valuable to know where vehicles are taken, not found; is irrelevant
+                                PORNOGRAPHYANDOBSCENE MAT
+                                    not important for user to know where people are arrested for indecency
+                            23 points listed above, 16 remaining
+                        12*16=192 pages
+                        12*6*50=9600 separate points
+                            192 is still a lot, but much more manageable
+    Wrote a bit more for the Project Overview
+        didn't have time to link this or the ethics article in, just going to push it back again
+    Received the json results file
+Tomorrow:
+    Tomorrow is going to be a bad day.
+        need to cut all the removed sections out of the file
+            won't have to do this manually, will write a java process to do it for me which will inevitably take longer than just doing it manually; such is the programmer way
+        need to parse the json file and convert them into format that's easy to insert into JavaScript file
+            will probably do this with a java process that'll take forever to debug as usual; such is also the programmer way
+        need to then write a java process that'll take that and generate 215 HTML pages (I already have 1)
+            did I mention that tomorrow was going to be a bad day?
+    Write a bit more for Project Overview if I have the effort in me to do so
+
+Postnote:
+    I'm losing track of time; thought today was Thursday. Although, at the time of me writing this, it is almost Thursday. Sleep deprivation is a 4/10, would not recommend.
+
+Note to self:
+    Spending less time on reddit would allow for better tracking of time

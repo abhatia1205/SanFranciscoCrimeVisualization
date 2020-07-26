@@ -1,0 +1,87 @@
+7/20/2020
+
+Today was our first day of working! Woke up earlier than usual to get to work.
+
+Today's work:
+    Spent a large chunk of the morning initializing new Firebase web application, creating general site outline
+        site is also hosted in Firebase, under https://cupertinohacks-cc57d.web.app/
+            should be "hack cupertino," was an unfortunate mistake
+        as of today, site includes main index/home page, 404, two log pages for both devs
+        multiple stylesheets (all extremely basic)
+        wrote a bit of script to properly setup Google Maps API
+            most of my experience with mapping API is from HERE.com, so this is kind of new
+        wrote a bit more script to setup buttons and selection system (explained in more detailed project doc, which we're starting soon)
+            struggled a bit with document.getElementById, spent a long time on StackOverflow figuring that out
+                it's been a while since I've worked with this, so cut me some slack
+    Did a ton of reading in both Firebase and Google Maps documentation :(
+        project revolves around visualizing predicted SF crime data in a Google Maps heatmap; data is stored in Firebase Realtime DB
+        to understand why firebase, refer to future report/overview
+    Wrote a quick java file to properly parse original Kaggle CSV file into something more specific for ML segment done by Anant
+        check it out below this section, read comments for more detailed explanation
+Tomorrow:
+    Set up proper links from index to other pages (specifically logs, about)
+    Going to set up some testing data to create heatmap layer
+        going to use the button/select HTML setup designed today to try manipulating/selecting different heatmaps
+        going to move testing data to Firebase Realtime DB and try to do the same (with new functions to read from DB)
+            will require another java process or something to properly set up json data --> going to be a pain in the ass
+                Firebase Realtime DB only takes jsons, and has some stupid rules (values can't contain blanks or the follow chars: [ ] . $ #
+    Start writing up more on the report/overview on the project
+        I've had this project in my head for a while; I have many thoughts regarding the effectiveness and ethicality of "predicting" crime
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+import java.util.regex.Pattern;
+
+public class ParseData {
+
+    public static void main(String args[]) throws IOException {
+
+        //file input for parsing
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\mainm\\Documents\\GitHub\\2020hackathon\\train.csv"));
+        //setting file location and creating printer
+        PrintWriter pr1 = new PrintWriter(new FileWriter("C:\\Users\\mainm\\Documents\\GitHub\\2020hackathon\\data.csv"));
+
+        int x = 878050;
+
+        //while loop for iteration, stops when file has nothing left
+        for (int i = 0; i < x; i++) {
+
+            //splits line into String array by column
+            String[] columns = br.readLine().split(",");
+
+            //coordinates composed of last two line values
+            String longi = columns[columns.length-2];
+            String lat = columns[columns.length-1];
+
+            String[] details = new String[7];
+
+            //for some god forsaken reason, the csv contains values formatted as such: "blank, blank" which the .split(",") line still splits into separate values
+            //because of this, I have to use the below while loop to create the details array; every time I have a value start with a space, I append it to the previous one
+            //those values are never actually used (because they depict the aftermath of the event or specific circumstances that I don't care about), so I neglected to reattach the commas
+            //although, for the sake of this project, this step is technically unnecessary (because of the ordering of data), I plan on using this data in other ways, so I made this anyway.
+            int j = 0;
+            int k = 0;
+
+            while (j < 7) {
+                if (columns[k].charAt(0) == ' ') {
+                    details[j-1] = details[j-1]+columns[k].replaceAll(Pattern.quote("."), "*").replaceAll("\"", "");
+                } else {
+                    details[j] = columns[k].replaceAll(Pattern.quote("."), "*").replaceAll("\"", "").replaceAll("/", "AND");
+                    j++;
+                }
+                k++;
+            }
+
+            String month = details[0].substring(5,7);
+            String type = details[1];
+
+            //proper CSV formatting with commas
+            pr1.println(month+","+type+","+lat+","+longi);
+
+        }
+        pr1.close();
+
+    }
+
+}

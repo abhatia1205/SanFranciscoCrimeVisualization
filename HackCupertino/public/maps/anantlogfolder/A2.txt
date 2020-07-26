@@ -1,0 +1,20 @@
+Tuesday, July 21, 2020
+
+Accomplishments:
+
+- Tried fitting Categorical Naive Bayes, Logistic Regression, Decision Tree, and simple MLP to the given data
+- Wrote script to format the data such that coordinates are rounded to values
+- Debugged the accuracy problem. For all of the given data, I was getting a maximum of 15% training accuracy, which is extremely
+  low. After some debugging, I realized it was a error in the logic - I was trying to map a lower dimensional space to one of higher
+  dimension and expect to gain information. This is, of course, a faulty premise and ruins the entire prediction process to some
+  extent. Additionally, since time and type of crime are not good indicators of location on average, and due to the fact that the
+  mapping is a function, the output space was limited to 6 of the 25 given options. The idea is essentially that the model learns to
+  predict crimes of a larger frequency, irrelevant of the time of year.
+- It seems as though predict class probabilities should still work to some extent. Only time will tell.
+- Finally, I realized that I can actually try to create a function to map longitudes such that it is a relatively een distribution to
+  avoid independences issues.
+
+Goals for tomorrow:
+
+- Try Linear regressing long and lat, and then subtracting this y^hat from both lon and lat to normalize.
+- Try creating intial json of predictions to ship to Michael

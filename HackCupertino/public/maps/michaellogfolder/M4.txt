@@ -1,0 +1,104 @@
+7/23/2020
+
+Woke up 40 minutes late today. This is looking like a poor trend.
+
+Today's work:
+    Got a JSON file from Anant today and got to work on it
+    Getting JSON information to the web application
+        first approach: use a java file to parse out the completed json and then use that information to generate new html pages
+            verdict: not worth doing, java's built in json reader isn't looking too hot
+        second approach: use jquery $.getJSON method on the front end to read the json file that we can now store locally
+            verdict: this was my final approach, and ultimately the one that worked
+            sat around for almost 2 hours trying to solve one large problem: the $.getJSON method did not push my location values into the array being exported into the heatmap
+                occurs because jquery is by default asynchronous, and by the time $.getJSON calls are complete, the map has already generated
+                    solved the problem with the following code snippet:
+
+                    $.ajaxSetup({
+                        async:false
+                    });
+
+        first json file had some noticeable issues
+            the testing data I chose was January/Larceny
+                the machine learning algorithm had chosen 50 of the same point; there are only 50 points in the set
+                the point they had all chosen was in the ocean
+            the weightage of the points was far too low; the Google Maps API has a built in scaling for heatmap point weightage
+                a weight of 1 is standard, all other weights are multipliers
+                our average weight is something like 3-4 orders of magnitude below 1, some even 5-6 orders of magnitude
+            the json file had data for only 11 out of 12 months of the year
+        second and third json file were doing better, but some points still in the ocean, and their organization was something like a grid
+            funny little thing - the jquery command I'm using requires for the json file's keys (specifically the crime classifications) to not have any spaces
+                parsed json file with a java process thats sole purpose is to remove spaces, read the code below.
+    Playing around with css styles while Anant finishes up data
+        chose a background image, decided to make the buttons blue. All around not super interesting
+    Finally added what exists in the Project Overview to about.html and linked it to a button
+Tomorrow's work:
+    Icons icons icons!
+        give every page a slick little icon or something that I still need to design
+    Final portion: get a completed, finalized JSON file and use it to generate all the additional webpages we need!
+        already have some plans on how to do this
+            first step is to go to original index page and set up a link system for the "go" button to link to
+                use the variables selected from the two select elements to generate a new string that will be linked to (use JS)
+                    if "april" and "larcenyandtheft" are selected, then it will take them to a page named aprillarcenyandtheft.html
+            second step is to copy and paste entirety of index code over into java program
+                java program will create multiple pages with the same code (with some specific changes) with different names, and will add to maps folder
+                only two parts are changed:
+                    the location function that reads the json file (starts line 137):
+
+                        //location information
+                        function locations() {
+
+                            var dataarray = [];
+
+                            //reading local json file with jquery
+                            $.getJSON("result-3.json", function(month) {
+                                async:false
+                                $.each(month[MONTHNUMBERHERE].TYPEOFCRIMEHERE, function(key, val) {
+                                    var lati = val.Latitude;
+                                    var longi = val.Longitude;
+                                    var weight = val.Weight;
+                                    console.log(lati+", "+longi+" weighted at: "+weight);
+                                    dataarray.push({location: new google.maps.LatLng(lati, longi), weight:val.Weight});
+                                });
+                            });
+
+                            console.log(dataarray);
+                            return dataarray;
+                        }
+
+                    and the portion of the page that displays the current map label (starts line 173):
+
+                        document.getElementById("monthdisplay").innerHTML = "Selected Month: " + "January" + " | ";
+                        document.getElementById("typedisplay").innerHTML = "Selected Type: " + "OTHEROFFENSES";
+
+                the title of each file will be MonthTYPE.html, and will be stored in the maps folder
+                    generated path and therefore url for each one will be: maps/MonthTYPE.html (i.e. maps/JanuaryLARCENYANDTHEFT)
+
+code used to parse json and remove all spaces:
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+public class RemoveSpaces {
+    public static void main(String args[]) throws IOException {
+
+        //bufferedreader for input
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\mainm\\documents\\github\\2020hackathon\\mlresults.json"));
+        //printer for output
+        PrintWriter pr = new PrintWriter(new FileWriter("C:\\Users\\mainm\\documents\\github\\2020hackathon\\mlresultsnospaces.json"));
+
+        //number of lines in the input file
+        int linecount = 117962;
+
+        //super basic for-loop process, just takes each line as as string, removes the spaces, and outputs the new string
+        for (int i = 0; i < linecount; i++) {
+            String line = br.readLine();
+            String nospaceline = line.replaceAll("\\s", "");
+            pr.println(nospaceline);
+        }
+
+        pr.close();
+
+    }
+}
+
+Postnote: the project is almost done! I'm very excited to see the final product and use the buttons.

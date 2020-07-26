@@ -1,0 +1,35 @@
+7/21/2020
+
+Day 2 was a little slower than Day 1. My lack of sleep and the fact that I'm waking up a few hours earlier than usual is kicking in.
+
+Today's work:
+    Set up button links from the main index page
+        had more struggles than I probably should have in doing this
+            didn't properly capitalize one of my page links and spent roughly 20 minutes trying to figure that out
+            forgot how to turn buttons into links --> <a><button></button></a> I actually forgot how to do this and had to look it up
+            might sound like a bit of a chump/3rd rate programmer with 4th rate coding confidence, but I swear it's not usually like this
+    Set up testing data for heatmap generation; generated actual heatmap
+        spent a great deal of time reading the testing code that Google Maps JS API provides on heatmaps
+            had to use function(exports) which I don't quite understand
+            ended up using the Google Maps sample code to debug my own code and find the problems
+            put the map generation part of the JS in <head></head> and the button parts in <body></body>
+                it wouldn't work otherwise, not sure why
+                it works now and that's what matters
+        spent a long long time, and didn't get to try implementing this data with Firebase Realtime DB; will do tomorrow
+    Wrote a short article on the ethics of predicting crime in Google Drive
+        already had much of the article thought out ahead of time, put it into words today
+        pretty happy with how it turned out, I hope the judges read it (they probably won't, I know), because it is rather meaningful in context of this project
+        there's no way to access it from within the project yet, that changes tomorrow
+Tomorrow:
+    Set up testing data in Firebase Realtime DB to convert to heatmap
+        stupid little thing (that will inevitably be a huge pain): Firebase Realtime DB has some strange restrictions on data, most notably that it can't include the following: [ ] . $ #
+            will need to replace decimal points through Java file, then reconvert them in JS (will be a huge pain)
+        if Anant gets jsons to me tomorrow, I can also test those
+            priority is still just to get the system working
+            will need to manage layering and getting the correct json branch based on HTML <select> elements that user inputs
+    Write more content for the site
+        start problem statement, project overview
+        work on "About Us" page
+            maybe get headshots?
+                Anant has one on FB, but I don't and I'm feeling a little self conscious about myself after this long in quarantine but it'll be ok
+    Work on connecting articles/overall project overview to the index page (utilize unbound buttons)
